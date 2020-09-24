@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" name="viewport">
+  <title>NLQ</title>
+  <link rel='stylesheet' href='./bootstrap3.3.7/css/bootstrap.min.css'>
+  <link rel="stylesheet" href="./css/AdminLTE.min.css">
+  <link rel='stylesheet' href='./css/json-viewer.css'>
+  <link rel='stylesheet' href='./css/index.css'>
+
+  <script src="./js/jquery-3.2.1.min.js"></script>
+  <script src="./bootstrap3.3.7/js/bootstrap.min.js"></script>
+  <script src="./js/json-viewer.js"></script>
+  <script src="./js/util.js"></script>
+
+  <script src="https://unpkg.com/prettier@1.13.0/standalone.js"></script>
+  <script src="https://unpkg.com/prettier@1.13.0/parser-babylon.js"></script>
+</head>
+
+<body>
+
+  <section class="content-header">
+    <h1>FMR<small>Natural Language Query</small></h1>
+    <ol class="breadcrumb">
+      <li><a href="/"><i class="fa fa-dashboard"></i>Home</a></li>
+      <li class="active">demo</li>
+    </ol>
+  </section>
+
+  <section class="content" style="margin-top:2px;margin-left:10px;margin-right:10px;">
+    <div class='row'>
+      <div class="form-group">
+        <div class="input-group">
+          <div class="input-group-addon">NL</div>
+          <input class="form-control" type="text" value="乘去北京的火车的人" id="text">
+          <span class="input-group-btn"><button id="submit" class="btn btn-default">Go</button></span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <ul class="nav nav-tabs">
+        <li class="active"><a href="#visual" data-toggle="tab">Visual</a></li>
+        <li><a href="#editor_holder" data-toggle="tab">JSON</a></li>
+        <li><a href="#tree" data-toggle="tab">TREE</a></li>
+      </ul>
+      <div class="tab-content">
+        <div class="tab-pane fade in active" id="visual"></div>
+        <div class="tab-pane fade" id="editor_holder"></div>
+        <div class="tab-pane fade" id="tree">
+          <div id="options" style="display: none">
+            <select id="font">
+              <option value="sans-serif" selected="selected">sans-serif</option>
+              <option value="serif">serif</option>
+              <option value="monospace">monospace</option>
+              <option value="cursive">cursive</option>
+              <option value="fantasy">fantasy</option>
+            </select>&nbsp;
+            <select id="fontsize">
+              <option value="12">12</option>
+              <option value="14">14</option>
+              <option value="16" selected="selected">16</option>
+              <option value="18">18</option>
+              <option value="20">20</option>
+              <option value="24">24</option>
+              <option value="36">36</option>
+            </select>&nbsp;
+            <input type="checkbox" id="nodecolor" checked="checked" /> Color
+            <input type="checkbox" id="autosub" checked="checked" /> Auto subscript
+            <input type="checkbox" id="triangles" checked="checked" /> Triangles
+          </div>
+
+          <div id="input" style="display: none">
+            <h2>Phrase (labelled bracket notation)</h2>
+            <textarea cols="40" rows="5" id="code"></textarea>
+            <span id="parse-error"></span>
+          </div>
+
+          <div id="tree"><canvas id="canvas" width="100" height="100" /></div>
+
+          <div id="tip" style="display: none;"></div>
+          <div id="footer" style="display: none">
+            <div id="version">&nbsp;</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <script type="module" src="./js/tree.js"></script>
+  <script type="module" src="./js/syntaxtree.js"></script>
+  <script type="module" src="./js/tip.js"></script>
+  <script src="./js/index.js"></script>
+  <script type="module" src="./js/canvas.js"></script>
+  <script type="module" src="./js/node.js"></script>
+</body>
+
+</html>

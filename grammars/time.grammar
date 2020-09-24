@@ -1,0 +1,39 @@
+#include "math.grammar"
+#include "time.en.grammar"
+#include "time.zh.grammar"
+
+
+<recent> = "最近" | "近";
+<timeunit> = "天" | "周" | "月" | "个月" | "年";
+<date> = <number> <timeunit>;
+<daterange> = <recent> <date> {nf.I(@)};
+
+<decade> = <digits>
+         | <cn_unit> <cn_zero>
+         | <cn_zero> <cn_zero>;
+         
+<hou> = "后";
+
+<datetime> = <date> <time> {nf.datetime($1,$2)}
+           | <date> <punct> <time> {nf.datetime($1,$3)}
+           | <date> "(?i)T" <time> {nf.datetime($1,$3)}
+           | <date> "(?i)T" <time> "(?i)Z" {nf.datetime($1,$3)} /*2008-09-22T18:33:28Z*/
+           | <date> <punct> <time> {nf.datetime($1,$3)}
+           | <time> <date> {nf.datetime($2,$1)}
+           | <time> <punct> <date> {nf.datetime($3,$1)}
+           | <date> {nf.datetime($1,"")}
+           | <time> {nf.datetime("",$1)}
+           ;
+
+
+
+
+/*<datetime> = <recent> <number> "个月" {nf.datetime.last_month($2)}
+           | <recent> <number> "周" {nf.datetime.last_week($2)}
+           | <recent> <number> "天" {nf.datetime.last_day($2)}
+           | "昨天" {nf.datetime.last_day(1)}
+           | "上周" {nf.datetime.last_week(1)}
+           | "上个月" {nf.datetime.last_month(1)}
+           ;
+           */
+

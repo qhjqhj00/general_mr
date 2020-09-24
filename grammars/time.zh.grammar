@@ -1,0 +1,48 @@
+<time_value> = <digits> | <cn_unit> {nf.I($1)};
+
+<year> = <time_value> "年" {nf.datetime.year($1, 0)}
+      | <year_digit> "年" {nf.datetime.year($1, 0)}
+      | <next_year> {nf.datetime.year(0, 1)};
+
+<month> = <time_value> "月" {nf.datetime.month($1, 0)};
+
+<last_day> = "昨天" | "昨日";
+<today> = "今天" | "今日";
+<next_day> = "明天" | "明日" | "翌日";
+<before_day> = "前天";
+<after_day> = "后天";
+
+<next_year> = "明年";
+<after_year> = "后年";
+<last_year> = "去年";
+<before_year> = "前年";
+
+<day> = <time_value> "日" {nf.datetime.day($1, 0)}
+      | <time_value> "号" {nf.datetime.day($1, 0)}
+      | <last_day> {nf.datetime.day(0, -1)}
+      | <next_day> {nf.datetime.day(0, 1)}
+      | <today> {nf.datetime.day(0, 0)}
+      | <before_day> {nf.datetime.day(0, -2)}
+      | <after_day> {nf.datetime.day(0, 2)};
+
+
+
+
+<date> = <year> <month> <day> {nf.ymd($1, $2, $3)}
+       | <month> <day> {nf.ymd(0, $1, $2)}
+       | <year> <day> {nf.ymd($1, 0, $2)}
+       | <year> <month> {nf.ymd($1, $2, 0)}
+       | <year> {nf.ymd($1, 0, 0)}
+       | <month> {nf.ymd(0, $1, 0)}
+       | <day> {nf.ymd(0, 0, $1)}
+       ;
+
+<time> = <time>;
+
+<duration> = <duration>;
+
+<set> = <set>;
+
+<range> = <range>;
+
+<holiday> = <holiday>;
