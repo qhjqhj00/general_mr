@@ -1,2 +1,2 @@
 rice embed-go
-go build
+GOOS=windows go build
