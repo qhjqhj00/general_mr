@@ -8,7 +8,17 @@
        | "seven" {nf.I(7)}
        | "eight" {nf.I(8)}
        | "nine"  {nf.I(9)}
-       ;
+       | "Zero"  {nf.I(0)}
+       | "One"   {nf.I(1)}
+       | "Two"	 {nf.I(2)}
+       | "Three" {nf.I(3)}
+       | "Four"  {nf.I(4)}
+       | "Five"  {nf.I(5)}
+       | "Six"   {nf.I(6)}
+       | "Seven" {nf.I(7)}
+       | "Eight" {nf.I(8)}
+       | "Nine"  {nf.I(9)}
+	;
 
 <numbers> = <unit>           {nf.I($1)}
           | <unit> <numbers> {nf.util.concat($1,$2)}
