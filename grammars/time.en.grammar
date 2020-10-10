@@ -2,6 +2,12 @@
 	| <four_digit_number>
 	| <digits>
 	;
+
+<year_duration> = <year>
+	| <en_number>
+	| <year_duration> "years" <before> 
+	;
+
 <and> = "and";
 
 <two_digit_number> = "ten" {nf.I(10)}
@@ -185,19 +191,7 @@
 	| "28" {nf.I(28)}
 	| "29" {nf.I(29)}
 	| "30" {nf.I(30)}
-	| "31" {nf.I(31)}
-	| <two_digit_number>
-	| <month> <two_digit_number>
-	| <month> <punct> <day>;
-
-
-<punct> = "/"
-        | "."
-        | "-"
-        | "_"
-        | "\\"
-        | "  "
-        | "and";
+	| "31" {nf.I(31)};
 
 <from> = "from"
 	| "从"

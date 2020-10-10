@@ -1,10 +1,71 @@
-<time_value> = <digits> | <cn_unit> {nf.I($1)};
+<nian> = "年";
+<yue> = "月";
+<ri> = "日"
+	| "号";
 
-<year> = <time_value> "年" {nf.datetime.year($1, 0)}
-      | <year_digit> "年" {nf.datetime.year($1, 0)}
-      | <next_year> {nf.datetime.year(0, 1)};
+<year> = <year_digit>;
+<year_duration> = <numbers_in_Chinese>;
 
-<month> = <time_value> "月" {nf.datetime.month($1, 0)};
+<month> = "一" {nf.I(1)}
+        | "二" {nf.I(2)}
+        | "三" {nf.I(3)}
+        | "四" {nf.I(4)}
+        | "五" {nf.I(5)}
+        | "六" {nf.I(6)}
+        | "七" {nf.I(7)}
+        | "八" {nf.I(8)}
+        | "九" {nf.I(9)}
+        | "十" {nf.I(10)}
+        | "十一" {nf.I(11)}
+        | "十二" {nf.I(12)}
+	| "壹" {nf.I(1)}
+        | "贰" {nf.I(2)}
+        | "叁" {nf.I(3)}
+        | "肆" {nf.I(4)}
+        | "伍" {nf.I(5)}
+        | "陆" {nf.I(6)}
+        | "柒" {nf.I(7)}
+        | "捌" {nf.I(8)}
+        | "玖" {nf.I(9)}
+	| "拾" {nf.I(10)}
+	| "拾壹" {nf.I(11)}
+	| "拾贰" {nf.I(12)}
+        | "两" {nf.I(2)}
+        | "俩" {nf.I(2)}
+        | "仨" {nf.I(3)}
+	| <month> "月";
+
+<day> = "一" {nf.I(1)}
+	| "二" {nf.I(2)}
+	| "三" {nf.I(3)}
+	| "四" {nf.I(4)}
+	| "五" {nf.I(5)}
+	| "六" {nf.I(6)}
+	| "七" {nf.I(7)}
+	| "八" {nf.I(8)}
+	| "九" {nf.I(9)}
+	| "十" {nf.I(10)}
+	| "十一" {nf.I(11)}
+	| "十二" {nf.I(12)}
+	| "十三" {nf.I(13)}
+	| "十四" {nf.I(14)}
+	| "十五" {nf.I(15)}
+	| "十六" {nf.I(16)}
+	| "十七" {nf.I(17)}
+	| "十八" {nf.I(18)}
+	| "十九" {nf.I(19)}
+	| "二十" {nf.I(20)}
+	| "二十一" {nf.I(21)}
+	| "二十二" {nf.I(22)}
+	| "二十三" {nf.I(23)}
+	| "二十四" {nf.I(24)}
+	| "二十五" {nf.I(25)}
+	| "二十六" {nf.I(26)}
+	| "二十七" {nf.I(27)}
+	| "二十八" {nf.I(28)}
+	| "二十九" {nf.I(29)}
+	| "三十" {nf.I(30)}
+	| "三十一" {nf.I(31)};
 
 <last_day> = "昨天" | "昨日";
 <today> = "今天" | "今日";
@@ -17,9 +78,7 @@
 <last_year> = "去年";
 <before_year> = "前年";
 
-<day> = <time_value> "日" {nf.datetime.day($1, 0)}
-      | <time_value> "号" {nf.datetime.day($1, 0)}
-      | <last_day> {nf.datetime.day(0, -1)}
+<day> = <last_day> {nf.datetime.day(0, -1)}
       | <next_day> {nf.datetime.day(0, 1)}
       | <today> {nf.datetime.day(0, 0)}
       | <before_day> {nf.datetime.day(0, -2)}
@@ -35,6 +94,7 @@
        | <year> {nf.ymd($1, 0, 0)}
        | <month> {nf.ymd(0, $1, 0)}
        | <day> {nf.ymd(0, 0, $1)}
+       | <year>
        ;
 
 <time> = <time>;
@@ -46,3 +106,6 @@
 <range> = <range>;
 
 <holiday> = <holiday>;
+
+<year_duration> = <numbers_in_Chinese>;
+
