@@ -218,6 +218,30 @@
 <the_day_before_yesterday> = "the day before yesterday";
 <the_day_after_tomorrow> = "the day after tomorrow";
 
+<week_unit> = "week" | "weeks";
+<week> = "Monday" {nf.I(1)}
+	| "Tuesday" {nf.I(2)}
+	| "Wednesday" {nf.I(3)}
+	| "Thursday" {nf.I(4)}
+	| "Friday" {nf.I(5)}
+	| "Saturday" {nf.I(6)}
+	| "Sunday" {nf.I(7)}
+	| "Mon" {nf.I(1)}
+	| "Tues" {nf.I(2)}
+	| "Wed" {nf.I(3)}
+	| "Thur" {nf.I(4)}
+	| "Fri" {nf.I(5)}
+	;
+
+<week_duration> = <en_number> <week_en_unit> <en_before>
+	|<en_number> <week_en_unit> <en_after>
+	|"last week"
+	|"next week"
+	|"this week"
+	|"last weekend"
+	|"next weekend"
+	|"this weekend";
+
 <from> = "from"
 	| "从"
 	;
