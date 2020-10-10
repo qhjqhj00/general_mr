@@ -3,10 +3,15 @@
 	| <digits>
 	;
 
-<year_duration> = <year>
-	| <en_number>
-	| <year_duration> "years" <before> 
-	;
+<last> = "last";
+<next> = "next";
+
+<year_unit> = "years" | "year";
+<year_duration> = <en_number> <year_unit> <en_before> 
+	| <en_number> <year_unit> <en_after> {nf.datetime($1,0,0)}
+	| <last> <en_number> <year_unit> {nf.datetime($1,0,0)}
+	| "last year"
+	| "next year";
 
 <and> = "and";
 
@@ -128,8 +133,15 @@
 	| "Dec" {nf.I(12)}
 	;
 
-<th> = "th";
+<month_unit> = "month" | "months";
+<month_duration> = <en_number> <month_unit> <en_before>
+	| <en_number> <month_unit> <en_after>
+	| <last_month>
+	| <next_month>
+	| "last month"
+	| "next month";
 
+<th> = "th";
 <day> = "1st" {nf.I(1)}
 	| "2nd" {nf.I(2)}
 	| "3th" {nf.I(3)}
@@ -192,6 +204,19 @@
 	| "29" {nf.I(29)}
 	| "30" {nf.I(30)}
 	| "31" {nf.I(31)};
+
+<day_unit> = "day" | "days";
+<day_duration> = <en_number> <day_unit> <en_before>
+	|<en_number> <day_unit> <en_after>
+	|<tomorrow>
+	|<yesterday>
+	|<the_day_before_yesterday>
+	|<the_day_after_tomorrow>
+	;
+<tomorrow> = "tomorrow";
+<yesterday> = "yesterday";
+<the_day_before_yesterday> = "the day before yesterday";
+<the_day_after_tomorrow> = "the day after tomorrow";
 
 <from> = "from"
 	| "从"

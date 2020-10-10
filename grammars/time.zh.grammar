@@ -3,8 +3,35 @@
 <ri> = "日"
 	| "号";
 
+<this> = "这个" | "这" | "本";
+<year_before> = "年前";
+<year_after> = "年后";
+
+<month_before> = "个月前" | "月前";
+<month_after> = "个月后" | "月后";
+
+<day_before> = "天前";
+<day_after> = "天后";
+
+<week_before> = "星期前" | "个星期前" | "周前"| "上" | "上一个";
+<week_after> = "星期后" | "个星期后" | "周后" | "下" | "下一个";
+
+
 <year> = <year_digit>;
-<year_duration> = <numbers_in_Chinese>;
+<year_duration> = <cn_number> <year_before>
+	| <cn_number> <year_after>
+	| <year_before> <cn_number>
+	| <year_after> <cn_number>
+	| <next_year>
+	| <last_year>
+	| <after_year>
+	| <before_year>;
+
+<next_year> = "明年";
+<after_year> = "后年";
+<last_year> = "去年";
+<before_year> = "前年" | "大前年";
+<this_year> = "今年";
 
 <month> = "一" {nf.I(1)}
         | "二" {nf.I(2)}
@@ -33,7 +60,18 @@
         | "两" {nf.I(2)}
         | "俩" {nf.I(2)}
         | "仨" {nf.I(3)}
-	| <month> "月";
+	| <month> "月"
+	| <this> <month>;
+
+<month_duration> = <cn_number> <month_before>
+	| <cn_number> <month_after>
+	| <month_before> <cn_number>
+	| <month_after> <cn_number>
+	;
+<next_month> = "下个月";
+<last_month> = "上个月";
+<this_month> = "这个月" | "本月";
+
 
 <day> = "一" {nf.I(1)}
 	| "二" {nf.I(2)}
@@ -67,25 +105,27 @@
 	| "三十" {nf.I(30)}
 	| "三十一" {nf.I(31)};
 
+<day_duration> = <cn_number> <day_before>
+	| <cn_number> <day_after>
+	| <day_before> <cn_number>
+	| <day_after> <cn_numbser>
+	| <last_day>
+	| <today>
+	| <next_day>
+	| <before_day>
+	| <after_day>;
+
 <last_day> = "昨天" | "昨日";
 <today> = "今天" | "今日";
 <next_day> = "明天" | "明日" | "翌日";
-<before_day> = "前天";
-<after_day> = "后天";
-
-<next_year> = "明年";
-<after_year> = "后年";
-<last_year> = "去年";
-<before_year> = "前年";
+<before_day> = "前天" | "大前天";
+<after_day> = "后天" | "大后天";
 
 <day> = <last_day> {nf.datetime.day(0, -1)}
       | <next_day> {nf.datetime.day(0, 1)}
       | <today> {nf.datetime.day(0, 0)}
       | <before_day> {nf.datetime.day(0, -2)}
       | <after_day> {nf.datetime.day(0, 2)};
-
-
-
 
 <date> = <year> <month> <day> {nf.ymd($1, $2, $3)}
        | <month> <day> {nf.ymd(0, $1, $2)}
@@ -97,15 +137,60 @@
        | <year>
        ;
 
-<time> = <time>;
+<week> = <weekunit> <week>
+	| <weekunit> 
+	| <this> <week>;
+<weekend> = <weekunit> <week>;
+<weekunit> = "星期" | "周" | "礼拜";
+<week> = "一" {nf.I(1)}
+          | "二" {nf.I(2)}
+          | "三" {nf.I(3)}
+          | "四" {nf.I(4)}
+          | "五" {nf.I(5)}
+          | "六" {nf.I(6)}
+          | "七" {nf.I(7)}
+	  | "日" {nf.I(7)}
+	  | "天" {nf.I(7)}
+	  | "壹" {nf.I(1)}
+          | "贰" {nf.I(2)}
+          | "叁" {nf.I(3)}
+          | "肆" {nf.I(4)}
+          | "伍" {nf.I(5)}
+          | "陆" {nf.I(6)}
+          | "柒" {nf.I(7)}
+	  | <cn_number>
+	  ;
 
-<duration> = <duration>;
+<weekend> = "六" {nf.I(6)}
+          | "七" {nf.I(7)}
+	  | "陆" {nf.I(6)}
+          | "柒" {nf.I(7)}
+	  | "末" 
+	  | "日" {nf.I(7)}
+	  | "天" {nf.I(7)}
+	  ;
 
-<set> = <set>;
 
-<range> = <range>;
+<week_duration> = <cn_number> <week_before>
+	| <cn_number> <week_after>
+	| <week_before> <cn_number>
+	| <week_after> <cn_number>
+	| <last_week>
+	| <next_week>
+	| <before_week>
+	| <after_week>
+	| <this_week>;
 
-<holiday> = <holiday>;
+<last_week> = "上一个" <week>
+	| "上" <week>
+	| "上个" <week>
+	;
+<next_week> = "下一个" <week>
+	| "下" <week>
+	| "下个" <week>
+	;
+<this_week> = "这个" <week>
+	| "本" <week>
+	;
 
-<year_duration> = <numbers_in_Chinese>;
-
+	
