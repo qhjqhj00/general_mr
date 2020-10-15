@@ -36,6 +36,15 @@
 	| <day_duration> <month_duration>
 	| <week_duration>;
 
+
+<datatime> = <from_cn> <datetime> <to_cn> <datetime> {nf.datarange($2,$4)}
+	|<from_en> <datetime> <to_en> <datetime> {nf.datarange($2,$4)};
+
+<datatime> = <before> <datetime> {nf.datacalcu($2)}
+	| <datetime> <before> {nf.datacalcu($1)}
+	| <datetime> <after> {nf.datacalcu($1)}
+	| <after> <datetime> {nf.datacalcu($2)};
+
 <punct> = "/"
 	| "\\"
 	| "."
@@ -161,12 +170,8 @@
 
 <from> = <from_cn> | <from_en>;
 <to> = <to_cn> | <to_en>;
-<from_cn> = "从";
+
+<from_cn> = "从" | "自";
 <from_en> = "from";
 <to_cn> = "到" | "至";
 <to_en> = "to";
-
-<datatime> = <from> <datetime> <to> <datetime> {nf.datarange($2,$4)};
-<datatime> = <before> <datetime> {nf.datacalcu($2)}
-	| <datetime> <before> {nf.datacalcu($1)};
-

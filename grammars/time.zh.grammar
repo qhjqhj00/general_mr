@@ -43,7 +43,8 @@
 	| "拾贰" {nf.I(12)}
         | "两" {nf.I(2)}
         | "俩" {nf.I(2)}
-        | "仨" {nf.I(3)};
+        | "仨" {nf.I(3)}
+	| <month> <month_cn_unit>;
 
 <month_duration> = <cn_number> <month_cn_before>
 	| <cn_number> <month_cn_after>
@@ -119,7 +120,8 @@
         | "贰拾捌" {nf.I(28)}
         | "贰拾玖" {nf.I(29)}
         | "叁拾" {nf.I(30)} 
-        | "叁拾壹" {nf.I(31)};
+        | "叁拾壹" {nf.I(31)}
+	| <day> <day_cn_unit>;
 
 
 <day_duration> = <cn_number> <day_cn_before>
