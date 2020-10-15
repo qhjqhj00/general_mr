@@ -2,63 +2,8 @@
 #include "time.en.grammar"
 #include "time.zh.grammar"
 
-
-<recent> = "最近" | "近";
-<timeunit> = "天" | "周" | "月" | "个月" | "年";
-<daterange> = <recent> <date> {nf.I(@)};
-
-<decade> = <digits>
-         | <cn_unit> <cn_zero>
-         | <cn_zero> <cn_zero>;
-         
-<from> = "from"
-        | "从"
-        ;
-
-<to> = "to"
-        | "到"
-        ;
-
-<before> = "before"
-        | "befor"
-	| "ago"
-        | "前"
-	| "年前"
-	| "天前"
-	| "个月前"
-	| "星期前"
-	| "个星期前"
-	| "周前"
-        ;
-<after> = "after"
-	| "later"
-        | "后"
-	| "年后"
-	| "天后"
-	| "个月后"
-	| "星期后"
-	| "个星期后"
-	| "周后"
-        ;
-
-<en_before> = "before" | "ago";
-<en_after> = "after" | "later";
-
-<year_before> = "年前" | "年以前";
-<year_after> = "年后" | "年以后";
-
-<month_before> = "个月前" | "月前" | "个月以前" | "月以前";
-<month_after> = "个月后" | "月后" | "个月以后" | "月以后";
-
-<day_before> = "天前" | "天以前";
-<day_after> = "天后" | "天以后";
-
-<week_before> = "星期前" | "个星期前" | "周前" | "星期以前" | "个星期以前" | "周以前";
-<week_after> = "星期后" | "个星期后" | "周后" | "星期以后" | "个星期以后" | "周以后";
-
-<week_unit> = "周" | "星期" ; 
-
-<datetime> = <year> {nf.datetime($1,0,0)}
+<datetime> = 
+    <year> {nf.datetime($1,0,0)}
 	| <month> {nf.datetime(0,$1,0)}
 	| <year> <punct> <month> <punct> <day> {nf.datetime($1,$3,$5)}
 	| <month> <day> {nf.datetime(0,$1,$2)}
@@ -67,27 +12,37 @@
 	| <year> <month> {nf.datetime($1,$2,0)}
 	| <month> <day> <year> {nf.datetime($3,$1,$2)}
 	| <day> <month> <year> {nf.datetime($3,$2,$1)}
-	| <year> <nian> {nf.datetime($1,0,0)}
-	| <year> <nian> <month> <yue> {nf.datetime($1,$3,0)}
-	| <year> <nian> <month> <yue> <day> <ri> {nf.datetime($1,$3,$5)}
-	| <month> <yue> <day> <ri> {nf.datetime(0,$1,$3)}
+	| <week>
+    | <year> <year_cn_unit> {nf.datetime($1,0,0)}
+	| <year> <year_cn_unit> <month> <month_cn_unit> {nf.datetime($1,$3,0)}
+	| <year> <year_cn_unit> <month> <month_cn_unit> <day> <day_cn_unit> {nf.datetime($1,$3,$5)}
+	| <month> <month_cn_unit> <day> <day_cn_unit> {nf.datetime(0,$1,$3)}
+    | <year_duration> {nf.datetime($1,0,0)}
 	| <year_duration> {nf.datetime($1,0,0)}
 	| <year_duration> <month> {nf.datetime($1,$2,0)}
 	| <year_duration> <month> <day> {nf.datetime($1,$2,$3)}
-	| <year_duration> <day_duration> {nf.datetime($1,0,$3)}
+	| <month> <year_duration> 
+	| <month> <day> <year_duration>
+	| <day> <month> <year_duration>
+	| <month_duration> <year_duration>
+	| <year_duration> <month_duration>
+	| <month_duration> <year_duration>
+	| <year_duration> <day_duration>
+	| <day_duration> <year_duration>
 	| <day_duration> {nf.datetime(0,0,$1)}
-	| <month_duration> {nf.datetime(0,$1,0)}
-	| <week_duration>
-	| <week>
-	;
+	| <month_duration> <day> {nf.datetime(0,$1,$2)}
+	| <day> <month_duration> {nf.datetime(0,$2,$1)}
+	| <month_duration> <day_duration>
+	| <day_duration> <month_duration>
+	| <week_duration>;
+
 <punct> = "/"
 	| "\\"
 	| "."
 	| "_"
 	| " ";
 
-<nian> = "年";
-
+<year> = <digits>;
 <month> = "1"
 	| "2"
 	| "3"
@@ -99,9 +54,7 @@
 	| "9"
 	| "10"
 	| "11"
-	| "12"
-	| <month> "月";
-
+	| "12";
 <day> = "1"
 	|"2"
 	|"3"
@@ -137,47 +90,83 @@
 <week> = "1"
 	|"2"
 	|"3"
-        |"4"
-        |"5"
-        |"6"
-        |"7"
-	|<weekunit> <week>;
+    |"4"
+    |"5"
+    |"6"
+    |"7";
 
-<year> = <digits>;
+
+<year_cn_unit> = "年";
+<month_cn_unit> = "月";
+<day_cn_unit> = "天" | "日";
+<week_cn_unit> = "周" | "星期" | "礼拜";
+
 <year_en_unit> = "years" | "year";
-<year_duration> = <digits> <year_before>
-	| <digits> <year_after>
-	| <year_before> <digits>
-	| <year_after> <digits>
+<day_en_unit> = "days" | "day";
+<month_en_unit> = "month" | "months";
+<week_en_unit> = "weeks" | "week";
+<weekend_en_unit> = "weekend" | "weekends";
+
+<before> =  <en_before>
+    | <year_cn_before>
+    | <month_cn_before>
+    | <day_cn_before>
+    | <week_cn_before>;
+
+<after> = <en_after>
+    | <year_cn_after>
+    | <month_cn_after>
+    | <day_cn_after>
+    | <week_cn_after>;
+
+<year_cn_before> = "年前" | "年以前";
+<year_cn_after> = "年后" | "年以后";
+<month_cn_before> = "个月前" | "月前" | "个月以前" | "月以前";
+<month_cn_after> = "个月后" | "月后" | "个月以后" | "月以后";
+<day_cn_before> = "天前" | "天以前";
+<day_cn_after> = "天后" | "天以后";
+<week_cn_before> = "星期前" | "个星期前" | "周前" | "星期以前" | "个星期以前" | "周以前";
+<week_cn_after> = "星期后" | "个星期后" | "周后" | "星期以后" | "个星期以后" | "周以后";
+<en_before> = "before" | "ago";
+<en_after> = "after" | "later";
+
+<year_duration> = <digits> <year_cn_before>
+	| <digits> <year_cn_after>
+	| <year_cn_before> <digits>
+	| <year_cn_after> <digits>
 	| <digits> <year_en_unit> <en_before>
 	| <digits> <year_en_unit> <en_after>;
 
-<day_en_unit> = "days" | "day";
-<day_duration> = <digits> <day_before>
-	| <digits> <day_after>
-	| <day_before> <digits>
-	| <day_after> <digits>
-	| <digits> <day_en_unit> <en_before>
-	| <digits> <day_en_unit> <en_after>;
-
-<month_en_unit> = "month" | "months";
-<month_duration> = <digits> <month_before>
-	| <digits> <month_after>
-	| <month_before> <digits>
-	| <month_after> <digits>
+<month_duration> = <digits> <month_cn_before>
+	| <digits> <month_cn_after>
+	| <month_cn_before> <digits>
+	| <month_cn_after> <digits>
 	| <digits> <month_en_unit> <en_after>
 	| <digits> <month_en_unit> <en_after>;
 
-<week_en_unit> = "weeks" | "week";
-<week_duration> = <digits> <week_before>
-	| <digits> <week_after>
-	| <week_before> <digits>
-	| <week_after> <digits>
+<day_duration> = <digits> <day_cn_before>
+	| <digits> <day_cn_after>
+	| <day_cn_before> <digits>
+	| <day_cn_after> <digits>
+	| <digits> <day_en_unit> <en_before>
+	| <digits> <day_en_unit> <en_after>;
+
+<week_duration> = <digits> <week_cn_before>
+	| <digits> <week_cn_after>
+	| <week_cn_before> <digits>
+	| <week_cn_after> <digits>
 	| <digits> <week_en_unit> <en_before>
 	| <digits> <week_en_unit> <en_after>;
 
 
+<from> = <from_cn> | <from_en>;
+<to> = <to_cn> | <to_en>;
+<from_cn> = "从";
+<from_en> = "from";
+<to_cn> = "到" | "至";
+<to_en> = "to";
+
 <datatime> = <from> <datetime> <to> <datetime> {nf.datarange($2,$4)};
 <datatime> = <before> <datetime> {nf.datacalcu($2)}
-	| <datetime> <before> {nf.datacalcu($1)}
-	;
+	| <datetime> <before> {nf.datacalcu($1)};
+

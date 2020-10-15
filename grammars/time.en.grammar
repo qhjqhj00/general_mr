@@ -1,17 +1,26 @@
+#include "number.en.grammar"
+
 <year> = <two_digit_number> <two_digit_number>
 	| <four_digit_number>
 	| <digits>
 	;
 
-<last> = "last";
-<next> = "next";
+<last_en> = "last";
+<next_en> = "next";
+<this_en> = "this";
 
-<year_unit> = "years" | "year";
-<year_duration> = <en_number> <year_unit> <en_before> 
-	| <en_number> <year_unit> <en_after> {nf.datetime($1,0,0)}
-	| <last> <en_number> <year_unit> {nf.datetime($1,0,0)}
-	| "last year"
-	| "next year";
+<year_duration> = <en_number> <year_en_unit> <en_before> 
+	| <en_number> <year_en_unit> <en_after> {nf.datetime($1,0,0)}
+	| <digits> <year_en_unit> <en_before>
+	| <digits> <year_en_unit> <en_after>
+	| <last> <en_number> <year_en_unit> {nf.datetime($1,0,0)}
+	| <last_year>
+	| <next_year>
+	| <this_year>;
+
+<last_year> = <last_en> <year_en_unit>;
+<next_year> = <next_en> <year_en_unit>;
+<this_year> = <this_en> <year_en_unit>;
 
 <and> = "and";
 
@@ -133,13 +142,17 @@
 	| "Dec" {nf.I(12)}
 	;
 
-<month_unit> = "month" | "months";
-<month_duration> = <en_number> <month_unit> <en_before>
-	| <en_number> <month_unit> <en_after>
+<month_duration> = <en_number> <month_en_unit> <en_before>
+	| <en_number> <month_en_unit> <en_after>
+	| <digits> <month_en_unit> <en_before>
+	| <digits> <month_en_unit> <en_after>
 	| <last_month>
 	| <next_month>
-	| "last month"
-	| "next month";
+	| <this_month>;
+
+<last_month> = <last_en> <month_en_unit>;
+<next_month> = <next_en> <month_en_unit>;
+<this_month> = <this_en> <month_en_unit>;
 
 <th> = "th";
 <day> = "1st" {nf.I(1)}
@@ -205,20 +218,22 @@
 	| "30" {nf.I(30)}
 	| "31" {nf.I(31)};
 
-<day_unit> = "day" | "days";
-<day_duration> = <en_number> <day_unit> <en_before>
-	|<en_number> <day_unit> <en_after>
+<day_duration> = <en_number> <day_en_unit> <en_before>
+	|<en_number> <day_en_unit> <en_after>
+	|<digits> <day_en_unit> <en_before>
+	|<digits> <day_en_unit> <en_after>
 	|<tomorrow>
 	|<yesterday>
 	|<the_day_before_yesterday>
 	|<the_day_after_tomorrow>
-	;
+	|<this_day>;
+
+<this_day> = <this_en> <day_en_unit>;
 <tomorrow> = "tomorrow";
 <yesterday> = "yesterday";
 <the_day_before_yesterday> = "the day before yesterday";
 <the_day_after_tomorrow> = "the day after tomorrow";
 
-<week_unit> = "week" | "weeks";
 <week> = "Monday" {nf.I(1)}
 	| "Tuesday" {nf.I(2)}
 	| "Wednesday" {nf.I(3)}
@@ -235,13 +250,20 @@
 
 <week_duration> = <en_number> <week_en_unit> <en_before>
 	|<en_number> <week_en_unit> <en_after>
-	|"last week"
-	|"next week"
-	|"this week"
-	|"last weekend"
-	|"next weekend"
-	|"this weekend";
-
+	| <last_week>
+	| <next_week>
+	| <this_week>
+	| <last_weekend>
+	| <next_weekend>
+	| <this_weekend>;
+	
+<last_week> = <last_en> <week_en_unit> | <last_en> <week>;
+<next_week> = <next_en> <week_en_unit> | <next_en> <week>;
+<this_week> = <this_en> <week_en_unit> | <this_en> <week>;
+<last_weekend> = <last_en> <weekend_en_unit>;
+<next_weekend> = <next_en> <weekend_en_unit>;
+<this_weekend> = <this_en> <weekend_en_unit>;
+ 
 <from> = "from"
 	| "从"
 	;
